@@ -1,4 +1,4 @@
-var Transform = require('stream').Transform;
+var Transform = require('readable-stream/transform');
 var util = require('util');
 var reduce = require('lodash.reduce');
 
@@ -17,6 +17,8 @@ function ChunkyStream (options) {
 
   Transform.call(this, options);
 }
+
+util.inherits(ChunkyStream, Transform);
 
 ChunkyStream.prototype.use = function (condition) {
   this.conditions.push(condition);
@@ -66,7 +68,5 @@ ChunkyStream.prototype._flush = function (callback) {
   this.flush();
   callback();
 };
-
-util.inherits(ChunkyStream, Transform);
 
 module.exports = ChunkyStream;
