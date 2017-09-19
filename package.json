@@ -23,7 +23,8 @@
   },
   "homepage": "https://github.com/dbhowell/chunky-stream#readme",
   "dependencies": {
-    "lodash.reduce": "^4.6.0"
+    "lodash.reduce": "^4.6.0",
+    "readable-stream": "^2.3.3"
   },
   "devDependencies": {
     "chai": "^4.1.2",
