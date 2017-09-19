@@ -1,0 +1,72 @@
+var Transform = require('stream').Transform;
+var util = require('util');
+var reduce = require('lodash.reduce');
+
+function ChunkyStream (options) {
+  if (!(this instanceof ChunkyStream)) {
+    return new ChunkyStream(options);
+  }
+
+  options.writeableObjectMode = true;
+  options.readableObjectMode = true;
+
+  this.interval = options.interval;
+  this.timeoutId = null;
+  this.chunks = [];
+  this.conditions = [];
+
+  Transform.call(this, options);
+}
+
+ChunkyStream.prototype.use = function (condition) {
+  this.conditions.push(condition);
+};
+
+ChunkyStream.prototype.flush = function () {
+  if (this.chunks.length === 0) {
+    return;
+  }
+
+  this.push(this.chunks);
+  this.chunks = [];
+};
+
+ChunkyStream.prototype.disableTimeout = function () {
+  if (this.timeoutId) {
+    clearTimeout(this.timeoutId);
+    this.timeoutId = null;
+  }
+};
+
+ChunkyStream.prototype.enableTimeout = function () {
+  if (this.interval > 0) {
+    this.timeoutId = setTimeout(this.flush.bind(this), this.interval);
+  }
+};
+
+ChunkyStream.prototype._transform = function (chunk, encoding, callback) {
+  this.disableTimeout();
+
+  var chunks = this.chunks;
+  var flush = reduce(this.conditions, function (value, condition) {
+    return value || condition(chunks, chunk);
+  }, false);
+
+  if (flush) {
+    this.flush();
+  }
+
+  this.chunks.push(chunk);
+  this.enableTimeout();
+
+  callback();
+};
+
+ChunkyStream.prototype._flush = function (callback) {
+  this.flush();
+  callback();
+};
+
+util.inherits(ChunkyStream, Transform);
+
+module.exports = ChunkyStream;

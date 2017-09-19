@@ -1,0 +1,43 @@
+{
+  "name": "chunky-stream",
+  "version": "0.1.0",
+  "description": "Streams groups of chunks based on conditions or an interval",
+  "main": "index.js",
+  "scripts": {
+    "test": "mocha",
+    "lint": "semistandard --verbose | snazzy"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/dbhowell/chunky-stream.git"
+  },
+  "keywords": [
+    "node",
+    "streams",
+    "chunk"
+  ],
+  "author": "David Howell (david@dynamicmethods.com.au)",
+  "license": "MIT",
+  "bugs": {
+    "url": "https://github.com/dbhowell/chunky-stream/issues"
+  },
+  "homepage": "https://github.com/dbhowell/chunky-stream#readme",
+  "dependencies": {
+    "lodash.reduce": "^4.6.0"
+  },
+  "devDependencies": {
+    "chai": "^4.1.2",
+    "mocha": "^3.5.3",
+    "pump": "^1.0.2",
+    "semistandard": "^11.0.0",
+    "snazzy": "^7.0.0",
+    "split2": "^2.1.1",
+    "streamtest": "^1.2.2"
+  },
+  "semistandard": {
+    "global": [
+      "describe",
+      "it"
+    ]
+  }
+}
