@@ -1,6 +1,6 @@
 {
   "name": "chunky-stream",
-  "version": "0.2.0",
+  "version": "0.2.1",
   "description": "Streams groups of chunks based on conditions or an interval",
   "main": "index.js",
   "scripts": {
