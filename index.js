@@ -7,6 +7,7 @@ function ChunkyStream (options) {
     return new ChunkyStream(options);
   }
 
+  options.objectMode = true;
   options.writeableObjectMode = true;
   options.readableObjectMode = true;
 
