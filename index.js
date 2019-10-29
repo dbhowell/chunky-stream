@@ -11,6 +11,7 @@ function ChunkyStream (options) {
   options.writeableObjectMode = true;
   options.readableObjectMode = true;
 
+  this.ignoreEmpty = options.ignoreEmpty;
   this.interval = options.interval;
   this.timeoutId = null;
   this.chunks = [];
@@ -59,7 +60,10 @@ ChunkyStream.prototype._transform = function (chunk, encoding, callback) {
     this.flush();
   }
 
-  this.chunks.push(chunk);
+  if (!this.ignoreEmpty || (chunk && chunk.length > 0)) {
+    this.chunks.push(chunk);
+  }
+
   this.enableTimeout();
 
   callback();

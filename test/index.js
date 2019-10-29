@@ -23,6 +23,25 @@ StreamTest.versions.forEach(function (version) {
         }));
     });
 
+    it('should return all in one chunk', function (done) {
+      var chunky = new ChunkyStream({
+        interval: 0,
+        ignoreEmpty: true
+      });
+
+      StreamTest[version].fromChunks(['one\ntwo\nthree\n\n'])
+        .pipe(split())
+        .pipe(chunky)
+        .pipe(StreamTest[version].toObjects(function (err, data) {
+          if (err) {
+            return done(err);
+          }
+
+          data[0].should.have.lengthOf(3);
+          done();
+        }));
+    });
+
     it('should return max 2 chunks at a time', function (done) {
       var chunky = new ChunkyStream({
         interval: 0
@@ -61,6 +80,26 @@ StreamTest.versions.forEach(function (version) {
 
           data[0].should.have.lengthOf(1);
           data.should.have.lengthOf(3);
+          done();
+        }));
+    });
+
+    it('should return 2 chunk at ~250ms intervals', function (done) {
+      var chunky = new ChunkyStream({
+        interval: 250,
+        ignoreEmpty: true
+      });
+
+      StreamTest[version].fromChunks(['one\n', 'two\n', '\n'], 300)
+        .pipe(split())
+        .pipe(chunky)
+        .pipe(StreamTest[version].toObjects(function (err, data) {
+          if (err) {
+            return done(err);
+          }
+
+          data[0].should.have.lengthOf(1);
+          data.should.have.lengthOf(2);
           done();
         }));
     });
