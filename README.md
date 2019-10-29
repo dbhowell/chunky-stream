@@ -11,6 +11,7 @@ Buffer up chunks and push them based on certain conditions or if a period of tim
 
 `chunky-stream` takes in the following options:
   * `interval` - The amount of time (in ms) to wait since receiving data (`0` to disable)
+  * `ignoreEmpty` - If set to true, do not count an empty string as a chunk (i.e. '', default = false)
 
 ## API
 
